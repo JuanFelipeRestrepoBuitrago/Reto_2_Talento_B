@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <nav class="navbar ps-5 navbar-expand-lg navbar-light bg-light", style="background-color: burlywood">
+        <h2 class="pl-4">{{ title }}</h2>
+    </nav>
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
