@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import login, change_password, create_user, account, cancel, transfers
+from .views import login, change_password, create_user, account, cancel, transfers, transfer
 
 urlpatterns = [
     path('', login, name='login'),
@@ -8,4 +8,6 @@ urlpatterns = [
     path('cuenta/<int:account>', account, name='account'),
     path('cuenta/<int:account>/cancelar/', cancel, name='cancel_account'),
     path('cuenta/<int:account>/transferencias/', transfers, name='transfers'),
+    path('cuenta/<int:account>/transferir/', transfer, name='transfer'),
+
 ]

@@ -1,0 +1,43 @@
+{% extends 'Account/Layout/base.html' %}
+
+{% block content %}
+    <div class="container-fluid bg-light bg-gradient">
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-warning" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <div class="row justify-content-center">
+            <div class="col-md-6 mt-2 bg-light bg-gradient">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-group mt-2">
+                        <label for="tipo_transaccion">Tipo de Transacción</label>
+                        <select class="form-select" name="tipo_transaccion" id="tipo_transaccion" required>
+                            <option disabled selected value="">Seleccione el tipo de transacción</option>
+                            {% for tipo_transaccion in tipo_transacciones %}
+                                <option value="{{ tipo_transaccion.id_tipo_transaccion }}">{{ tipo_transaccion.nombre_transaccion }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="numero_cuenta">Cuenta Destino</label>
+                        <input type="number" class="form-control" id="numero_cuenta" name="numero_cuenta" placeholder="Número de Cuenta Destino" required>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="monto">Monto</label>
+                        <input type="number" step="any" class="form-control" id="monto" name="monto" placeholder="Monto a Transferir" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2">Transferir</button>
+                    <button type="reset" class="btn btn-danger mt-2">Limpiar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

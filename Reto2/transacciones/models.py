@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 
 # Create your models here.
@@ -22,7 +23,7 @@ class Cuentas(models.Model):
     numero_cuenta = models.BigAutoField(primary_key=True)
     password = models.CharField(max_length=50)
     tipo_cuenta = models.CharField(max_length=9)
-    saldo = models.FloatField()
+    saldo = models.FloatField(default=0)
     id_titular = models.ForeignKey('Titulares', models.DO_NOTHING, db_column='id_titular')
 
     def __str__(self):
@@ -50,7 +51,7 @@ class TipoTransaccion(models.Model):
 class Movimientos(models.Model):
     id_movimiento = models.AutoField(primary_key=True)
     valor = models.FloatField()
-    fecha_transaccion = models.DateTimeField()
+    fecha_transaccion = models.DateTimeField(default=datetime.datetime.now())
     numero_cuenta_salida = models.ForeignKey(Cuentas, models.DO_NOTHING, db_column='numero_cuenta_salida')
     numero_cuenta_entrada = models.ForeignKey(Cuentas, models.DO_NOTHING, db_column='numero_cuenta_entrada', related_name='movimientos_numero_cuenta_entrada_set', blank=True, null=True)
     id_tipo_transaccion = models.ForeignKey('TipoTransaccion', models.DO_NOTHING, db_column='id_tipo_transaccion')

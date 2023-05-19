@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Titulares, Cuentas, Movimientos
+from .models import Titulares, Cuentas, Movimientos, TipoTransaccion
 from django.http import HttpResponse
 from django.contrib import messages
 from django.db import transaction, IntegrityError
@@ -139,6 +139,38 @@ def transfers(request, account):
         'cuenta': cuenta,
         'transactions': transacciones,
     })
+
+
+def transfer(request, account):
+    cuenta = Cuentas.objects.get(numero_cuenta=account)
+    tipo_transacciones = TipoTransaccion.objects.all()
+    if request.method == 'GET':
+        return render(request, 'Account/transaction.html', {
+            'title': f'{cuenta.id_titular.nombres}',
+            'cuenta': cuenta,
+            'tipo_transacciones': tipo_transacciones,
+        })
+    else:
+        numero_cuenta_destino = request.POST.get('numero_cuenta')
+        monto = float(request.POST.get('monto'))
+        id_tipo_transaccion = int(request.POST.get('tipo_transaccion'))
+        try:
+            cuenta_destino = Cuentas.objects.get(numero_cuenta=numero_cuenta_destino)
+            if cuenta_destino == cuenta:
+                messages.error(request, 'No puedes transferir a la misma cuenta')
+                return redirect('transfer', account=account)
+            if cuenta.saldo < monto:
+                messages.error(request, 'Saldo insuficiente')
+                return redirect('transfer', account=account)
+            Movimientos.objects.create(numero_cuenta_entrada_id=cuenta_destino.numero_cuenta,
+                                       numero_cuenta_salida_id=cuenta.numero_cuenta,
+                                       valor=monto,
+                                       id_tipo_transaccion_id=id_tipo_transaccion)
+            messages.success(request, 'Transferencia realizada con éxito')
+            return redirect('account', account=account)
+        except Cuentas.DoesNotExist:
+            messages.error(request, 'La cuenta destino no existe')
+            return redirect('transfer', account=account)
 
 
 @transaction.atomic
