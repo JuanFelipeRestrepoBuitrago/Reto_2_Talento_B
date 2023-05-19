@@ -25,7 +25,7 @@ def login(request):
             if cuenta.password != password:
                 messages.error(request, 'Contraseña incorrecta')
                 return redirect('login')
-            return HttpResponse('Bienvenido')
+            return redirect('account', account=cuenta.numero_cuenta)
         except (Titulares.DoesNotExist, Cuentas.DoesNotExist, ValueError):
             messages.info(request, 'Cuenta no existente')
             return redirect('login')
@@ -99,3 +99,41 @@ def create_user(request):
         except IntegrityError:
             messages.error(request, 'Cuenta ya existente')
             return redirect('signup')
+
+
+@transaction.atomic
+def account(request, account):
+    cuenta = Cuentas.objects.select_for_update().get(numero_cuenta=account)
+    if request.method == 'GET':
+        return render(request, 'Account/home.html', {
+            'title': f'{cuenta.id_titular.nombres}',
+            'cuenta': cuenta,
+        })
+    else:
+        nombres = request.POST.get('nombres')
+        apellidos = request.POST.get('apellidos')
+        saldo = float(request.POST.get('saldo'))
+        tipo_cuenta = request.POST.get('tipo_cuenta')
+
+        cuenta.id_titular.nombres = nombres
+        cuenta.id_titular.apellidos = apellidos
+        cuenta.id_titular.save()
+
+        try:
+            cuenta.saldo = saldo
+            cuenta.tipo_cuenta = tipo_cuenta
+            cuenta.save()
+        except (ValueError, IntegrityError):
+            messages.error(request, 'Ya tienes otra cuenta con ese tipo de cuenta')
+            return redirect('account', account=account)
+        messages.success(request, 'Cuenta modificada con éxito')
+        return redirect('account', account=account)
+
+
+@transaction.atomic
+def cancel(request, account):
+    cuenta = Cuentas.objects.select_for_update().get(numero_cuenta=account)
+    cuenta.saldo = 0
+    cuenta.save()
+    messages.success(request, 'Cuenta cancelada con éxito')
+    return redirect('account', account=account)

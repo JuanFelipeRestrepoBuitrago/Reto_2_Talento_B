@@ -1,0 +1,47 @@
+{% extends 'Account/Layout/base.html' %}
+
+{% block content %}
+    <div class="container-fluid bg-light bg-gradient">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-warning" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <div class="row justify-content-center">
+            <div class="col-md-6 mt-2 bg-light bg-gradient">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-group mt-2">
+                        <label for="nombres">Nombres</label>
+                        <input type="text" class="form-control" id="nombres" name="nombres" placeholder="Ingrese sus Nombres" value="{{ cuenta.id_titular.nombres }}">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="apellidos">Apellidos</label>
+                        <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Ingrese sus Apellidos" value="{{ cuenta.id_titular.apellidos }}">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="tipo_cuenta">Tipo de Cuenta</label>
+                        <select class="form-select" name="tipo_cuenta" id="tipo_cuenta">
+                            <option disabled value="">Seleccione su tipo de cuenta</option>
+                            <option value="Ahorros" {% if cuenta.tipo_cuenta == 'Ahorros' %}selected{% endif %}>Cuenta de Ahorros</option>
+                            <option value="Corriente" {% if cuenta.tipo_cuenta == 'Corriente' %}selected{% endif %}>Cuenta Corriente</option>
+                            <option value="Nómina" {% if cuenta.tipo_cuenta == 'Nómina' %}selected{% endif %}>Cuenta de Nómina</option>
+                        </select>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="saldo">Saldo</label>
+                        <input type="number" step="any" class="form-control" id="saldo" name="saldo" placeholder="Ingrese el Saldo que Tendrá la Cuenta", value="{{ cuenta.saldo }}">
+                    </div>
+                    <button type="submit" class="btn mt-4 btn-primary">Modificar</button>
+                </form>
+                <p class="mt-3">
+                    <a href="{% url 'change_password' %}">Cambiar Contraseña</a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <nav class="navbar ps-5 navbar-expand-lg navbar-light bg-light">
+        <h3>{{ title }}</h3>
+        <p>
+            <strong>Saldo:</strong> {{ cuenta.saldo }}
+        </p>
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse", id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account' cuenta.numero_cuenta %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account' cuenta.numero_cuenta %}">Transacciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account' cuenta.numero_cuenta %}">Transferir</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'cancel_account' cuenta.numero_cuenta %}">Cancelar Cuenta</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Cerrar Sesón</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
