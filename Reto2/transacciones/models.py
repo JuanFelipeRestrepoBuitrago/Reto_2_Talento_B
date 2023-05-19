@@ -19,7 +19,7 @@ class Titulares(models.Model):
 
 
 class Cuentas(models.Model):
-    numero_cuenta = models.PositiveBigIntegerField(primary_key=True)
+    numero_cuenta = models.BigAutoField(primary_key=True)
     password = models.CharField(max_length=50)
     tipo_cuenta = models.CharField(max_length=9)
     saldo = models.FloatField()

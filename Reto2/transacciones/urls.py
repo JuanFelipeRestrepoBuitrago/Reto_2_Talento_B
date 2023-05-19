@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import login, change_password
+from .views import login, change_password, create_user
 
 urlpatterns = [
     path('', login, name='login'),
-    path('cambiar contraseña/', change_password, name='change_password'),
+    path('cambiarContraseña/', change_password, name='change_password'),
+    path('nuevoUsuario/', create_user, name='signup'),
 ]
