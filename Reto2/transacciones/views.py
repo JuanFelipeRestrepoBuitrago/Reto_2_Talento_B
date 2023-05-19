@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Titulares, Cuentas
+from .models import Titulares, Cuentas, Movimientos
 from django.http import HttpResponse
 from django.contrib import messages
 from django.db import transaction, IntegrityError
@@ -128,6 +128,17 @@ def account(request, account):
             return redirect('account', account=account)
         messages.success(request, 'Cuenta modificada con éxito')
         return redirect('account', account=account)
+
+
+def transfers(request, account):
+    cuenta = Cuentas.objects.get(numero_cuenta=account)
+    transacciones = Movimientos.objects.filter(numero_cuenta_entrada=cuenta) | Movimientos.objects.filter(
+        numero_cuenta_salida=cuenta)
+    return render(request, 'Account/transfers.html', {
+        'title': f'{cuenta.id_titular.nombres}',
+        'cuenta': cuenta,
+        'transactions': transacciones,
+    })
 
 
 @transaction.atomic

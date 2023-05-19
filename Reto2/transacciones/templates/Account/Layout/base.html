@@ -7,8 +7,10 @@
     {% bootstrap_css %}
     {% bootstrap_javascript %}
     <nav class="navbar ps-5 navbar-expand-lg navbar-light bg-light">
-        <h3>{{ title }}</h3>
         <p>
+            <strong>{{ title }}</strong> {{ cuenta.numero_cuenta }}
+        </p>
+        <p class="ms-5">
             <strong>Saldo:</strong> {{ cuenta.saldo }}
         </p>
         <div class="container-fluid">
@@ -18,7 +20,7 @@
                         <a class="nav-link" href="{% url 'account' cuenta.numero_cuenta %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account' cuenta.numero_cuenta %}">Transacciones</a>
+                        <a class="nav-link" href="{% url 'transfers' cuenta.numero_cuenta %}">Transacciones</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'account' cuenta.numero_cuenta %}">Transferir</a>

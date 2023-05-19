@@ -1,0 +1,29 @@
+{% extends 'Account/Layout/base.html' %}
+
+{% block content %}
+    <div class="table-responsive ms-2 me-2 justify-content-center">
+        <table class="table table-striped align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Id de la Transacción</th>
+                    <th scope="col">Cuenta de Salida</th>
+                    <th scope="col">Cuenta de Entrada</th>
+                    <th scope="col">Fecha de la Transacción</th>
+                    <th scope="col">Valor</th>
+                    <th scope="col">Tipo de Transacción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                    <tr>
+                        <th scope="row">{{ transaction.id_movimiento }}</th>
+                        <td>{{ transaction.numero_cuenta_salida }}</td>
+                        <td>{{ transaction.numero_cuenta_entrada }}</td>
+                        <td>{{ transaction.fecha_transaccion }}</td>
+                        <td>{{ transaction.valor }}</td>
+                        <td>{{ transaction.id_tipo_transaccion }}</td>
+                    </tr>
+                {% endfor %}
+        </table>
+    </div>
+{% endblock %}
