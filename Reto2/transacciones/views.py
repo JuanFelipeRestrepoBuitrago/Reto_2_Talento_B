@@ -176,7 +176,8 @@ def transfer(request, account):
 @transaction.atomic
 def cancel(request, account):
     cuenta = Cuentas.objects.select_for_update().get(numero_cuenta=account)
-    cuenta.saldo = 0
-    cuenta.save()
+    Movimientos.objects.create(numero_cuenta_salida_id=cuenta.numero_cuenta,
+                               valor=cuenta.saldo,
+                               id_tipo_transaccion_id=1)
     messages.success(request, 'Cuenta cancelada con éxito')
     return redirect('account', account=account)
